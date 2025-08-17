@@ -20,7 +20,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <nav className="text-gray-400 mt-4">
+        <nav className="text-gray-400 my-4">
           {routes.map(({ path, text }) => (
             <NavLink
               key={text}

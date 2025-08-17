@@ -6,7 +6,7 @@ export default function Container({
   classNames?: string;
 }) {
   return (
-    <section className={`w-full p-4 flex flex-col ${classNames}`}>
+    <section className={`flex flex-col items-center ${classNames}`}>
       {children}
     </section>
   );

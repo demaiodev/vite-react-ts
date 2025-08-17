@@ -42,7 +42,7 @@ export default function Home() {
 
   return (
     <>
-      <Container>
+      <Container classNames="m-4">
         <SearchInput
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
