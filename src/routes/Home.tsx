@@ -15,7 +15,7 @@ export default function Home() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchMovies = async (limit = 10) => {
+  const fetchMovies = async (limit = 12) => {
     if (!searchTerm) return;
     setLoading(true);
     const response = await fetch(

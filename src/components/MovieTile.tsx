@@ -15,8 +15,7 @@ export default function MovieTile({ movie }: { movie: Movie }) {
       </h2>
 
       <p className="text-gray-400">
-        {movie.startYear}
-        {" - "}
+        {movie.startYear ? movie.startYear + " - " : ""}
         {movie.rating?.aggregateRating
           ? `${movie.rating.aggregateRating}/10`
           : "No ratings"}
