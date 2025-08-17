@@ -1,0 +1,36 @@
+type SearchInputProps = {
+  searchTerm: string;
+  setSearchTerm: (value: string) => void;
+  fetchMovies: () => void;
+};
+
+export default function SearchInput({
+  searchTerm,
+  setSearchTerm,
+  fetchMovies,
+}: SearchInputProps) {
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        fetchMovies();
+      }}
+    >
+      <label htmlFor="search-input" className="sr-only">
+        Search
+      </label>
+      <input
+        type="text"
+        id="search-input"
+        name="search-input"
+        className="search-input min-w-75 mx-auto p-4 mb-8 mr-1 rounded-lg shadow-lg focus:outline-none"
+        placeholder="Search for a movie..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <button className="p-4 bg-gray-800 text-white rounded-lg shadow-md hover:bg-gray-700 focus:outline-none">
+        Search
+      </button>
+    </form>
+  );
+}
