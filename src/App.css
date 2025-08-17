@@ -44,27 +44,37 @@ body {
 
 .movie-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
   margin: 2em 4em;
+  justify-items: center;
+}
+
+.movie-grid > * {
+  width: 100%;
+  max-width: 300px;
+  min-width: 220px;
+  margin: 0 auto;
 }
 
 @media (max-width: 1300px) {
   .movie-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .movie-grid {
-    grid-template-columns: auto;
-    grid-template-rows: auto;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Movie image normalization */
+@media (max-width: 600px) {
+  .movie-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .movie-image-container {
   width: 100%;
   aspect-ratio: 2/3;

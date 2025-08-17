@@ -9,6 +9,7 @@ export default function MovieTile({ movie }: { movie: Movie }) {
           href={`https://www.imdb.com/title/${movie.id}`}
           target="_blank"
           rel="noopener noreferrer"
+          className="block w-full max-w-[220px] truncate"
         >
           {movie.originalTitle}
         </a>
