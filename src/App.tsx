@@ -16,7 +16,7 @@ function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchMovies = async (limit = 5) => {
+  const fetchMovies = async (limit = 10) => {
     if (!searchTerm) return;
     setLoading(true);
     const response = await fetch(
@@ -26,7 +26,7 @@ function App() {
     setMovies(titles);
 
     return Promise.all(
-      titles.map((title: any) => {
+      titles.map((title: Movie) => {
         return new Promise((resolve, reject) => {
           if (!title.primaryImage?.url) return resolve(null);
           try {

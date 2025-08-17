@@ -11,6 +11,7 @@ export default function SearchInput({
 }: SearchInputProps) {
   return (
     <form
+      className="search-container"
       onSubmit={(e) => {
         e.preventDefault();
         fetchMovies();
@@ -23,12 +24,12 @@ export default function SearchInput({
         type="text"
         id="search-input"
         name="search-input"
-        className="search-input min-w-75 mx-auto p-4 mb-8 mr-1 rounded-lg shadow-lg focus:outline-none"
+        className="search-input mx-auto p-4 mb-8 mr-1 rounded-lg shadow-lg focus:outline-none"
         placeholder="Search for a movie..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <button className="p-4 bg-gray-800 text-white rounded-lg shadow-md hover:bg-gray-700 focus:outline-none">
+      <button className="search-button p-4 bg-gray-800 text-white rounded-lg shadow-md hover:bg-gray-700 focus:outline-none">
         Search
       </button>
     </form>
