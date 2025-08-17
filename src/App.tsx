@@ -47,6 +47,7 @@ function App() {
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         fetchMovies={debounce(fetchMovies)}
+        loading={loading}
       />
       {loading && <LoadingSpinner />}
       {!loading && movies.length > 0 && (

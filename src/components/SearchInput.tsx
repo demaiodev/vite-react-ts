@@ -1,11 +1,13 @@
 type SearchInputProps = {
   searchTerm: string;
+  loading: boolean;
   setSearchTerm: (value: string) => void;
   fetchMovies: () => void;
 };
 
 export default function SearchInput({
   searchTerm,
+  loading,
   setSearchTerm,
   fetchMovies,
 }: SearchInputProps) {
@@ -29,7 +31,10 @@ export default function SearchInput({
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <button className="search-button p-4 bg-gray-800 text-white rounded-lg shadow-md hover:bg-gray-700 focus:outline-none">
+      <button
+        className="search-button p-4 bg-gray-800 text-white rounded-lg shadow-md hover:bg-gray-700 focus:outline-none"
+        disabled={loading}
+      >
         Search
       </button>
     </form>
