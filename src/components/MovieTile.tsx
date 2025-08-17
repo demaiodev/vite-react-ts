@@ -3,7 +3,7 @@ import Container from "./Container";
 
 export default function MovieTile({ movie }: { movie: Movie }) {
   return (
-    <Container classNames="p-4 bg-gray-800 rounded-lg shadow-md shadow-gray-950">
+    <Container classNames="bg-gray-800 rounded-lg shadow-md shadow-gray-950">
       <h2 className="text-xl font-bold text-white hover:underline hover:cursor-pointer truncate">
         <a
           href={`https://www.imdb.com/title/${movie.id}`}

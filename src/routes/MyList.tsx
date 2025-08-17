@@ -1,7 +1,11 @@
+import Container from "../components/Container";
+
 export default function MyList() {
   return (
     <>
-      <div>My List</div>
+      <Container>
+        <div>My List</div>
+      </Container>
     </>
   );
 }

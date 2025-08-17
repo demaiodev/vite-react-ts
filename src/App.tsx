@@ -20,9 +20,13 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <nav className="text-gray-400">
+        <nav className="text-gray-400 mt-4">
           {routes.map(({ path, text }) => (
-            <NavLink key={text} to={path} className="px-2 hover:text-white">
+            <NavLink
+              key={text}
+              to={path}
+              className="px-2 hover:text-white hover:underline"
+            >
               {text}
             </NavLink>
           ))}

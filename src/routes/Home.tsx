@@ -8,6 +8,7 @@ import Grid from "../components/Grid";
 import debounce from "../utils/debounce";
 
 import type { Movie } from "../types/Movie";
+import Container from "../components/Container";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -41,20 +42,22 @@ export default function Home() {
 
   return (
     <>
-      <SearchInput
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        fetchMovies={debounce(fetchMovies)}
-        loading={loading}
-      />
-      {loading && <LoadingSpinner />}
-      {!loading && movies.length > 0 && (
-        <Grid>
-          {movies.map((movie) => (
-            <MovieTile key={movie.id} movie={movie} />
-          ))}
-        </Grid>
-      )}
+      <Container>
+        <SearchInput
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          fetchMovies={debounce(fetchMovies)}
+          loading={loading}
+        />
+        {loading && <LoadingSpinner />}
+        {!loading && movies.length > 0 && (
+          <Grid>
+            {movies.map((movie) => (
+              <MovieTile key={movie.id} movie={movie} />
+            ))}
+          </Grid>
+        )}
+      </Container>
     </>
   );
 }
