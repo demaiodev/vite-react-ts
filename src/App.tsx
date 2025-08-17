@@ -1,62 +1,38 @@
-import { useState } from "react";
-
-import LoadingSpinner from "./components/LoadingSpinner";
-import SearchInput from "./components/SearchInput";
-import MovieTile from "./components/MovieTile";
-import Grid from "./components/Grid";
-
-import debounce from "./utils/debounce";
-
-import type { Movie } from "./types/Movie";
-
 import "./App.css";
+import { BrowserRouter, Routes, Route, NavLink } from "react-router";
+import Home from "./routes/Home";
+import MyList from "./routes/MyList";
+
+const routes = [
+  {
+    path: "/",
+    text: "Home",
+    component: <Home />,
+  },
+  {
+    path: "my-list",
+    text: "List",
+    component: <MyList />,
+  },
+];
 
 function App() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  const fetchMovies = async (limit = 10) => {
-    if (!searchTerm) return;
-    setLoading(true);
-    const response = await fetch(
-      `https://api.imdbapi.dev/search/titles?query=${searchTerm}&limit=${limit}`
-    );
-    const { titles } = await response.json();
-    setMovies(titles);
-
-    return Promise.all(
-      titles.map((title: Movie) => {
-        return new Promise((resolve, reject) => {
-          if (!title.primaryImage?.url) return resolve(null);
-          try {
-            const img = new Image();
-            img.src = title.primaryImage.url;
-            img.onload = () => resolve(null);
-          } catch (e) {
-            reject(e);
-          }
-        });
-      })
-    ).finally(() => setLoading(false));
-  };
-
   return (
     <>
-      <SearchInput
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        fetchMovies={debounce(fetchMovies)}
-        loading={loading}
-      />
-      {loading && <LoadingSpinner />}
-      {!loading && movies.length > 0 && (
-        <Grid>
-          {movies.map((movie) => (
-            <MovieTile key={movie.id} movie={movie} />
+      <BrowserRouter>
+        <nav className="text-gray-400">
+          {routes.map(({ path, text }) => (
+            <NavLink key={text} to={path} className="px-2 hover:text-white">
+              {text}
+            </NavLink>
           ))}
-        </Grid>
-      )}
+        </nav>
+        <Routes>
+          {routes.map(({ component, text, path }) => (
+            <Route key={text} path={path} element={component} />
+          ))}
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
