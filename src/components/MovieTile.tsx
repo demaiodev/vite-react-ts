@@ -1,4 +1,5 @@
 import type { Movie } from "../types/Movie";
+import AddMovieButton from "./AddMovieButton";
 import Container from "./Container";
 
 export default function MovieTile({ movie }: { movie: Movie }) {
@@ -35,9 +36,7 @@ export default function MovieTile({ movie }: { movie: Movie }) {
           </div>
         )}
       </div>
-      <button className="rounded-lg bg-gray-600 hover:bg-gray-500 p-1 w-full shadow-md hover:shadow-lg">
-        +
-      </button>
+      <AddMovieButton movie={movie} />
     </Container>
   );
 }

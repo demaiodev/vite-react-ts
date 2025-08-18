@@ -1,7 +1,13 @@
-export default function LoadingSpinner() {
+export default function LoadingSpinner({ size = "100px" }) {
   return (
     <div className="mt-50">
-      <div className="w-16 h-16 border-b-2 border-gray-300 rounded-full animate-spin"></div>
+      <div
+        className="border-b-2 border-gray-300 rounded-full animate-spin"
+        style={{
+          width: size,
+          height: size,
+        }}
+      ></div>
     </div>
   );
 }

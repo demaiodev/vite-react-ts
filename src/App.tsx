@@ -11,7 +11,7 @@ const routes = [
   },
   {
     path: "my-list",
-    text: "List",
+    text: "My List",
     component: <MyList />,
   },
 ];
@@ -20,7 +20,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <nav className="text-gray-400 my-4">
+        <nav className="my-4">
           {routes.map(({ path, text }) => (
             <NavLink
               key={text}
