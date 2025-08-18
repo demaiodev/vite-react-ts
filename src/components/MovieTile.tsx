@@ -12,7 +12,7 @@ export default function MovieTile({ movie }: { movie: Movie }) {
           rel="noopener noreferrer"
           className="block w-full max-w-[220px] truncate"
         >
-          {movie.originalTitle}
+          {movie.primaryTitle}
         </a>
       </h2>
 
@@ -27,7 +27,7 @@ export default function MovieTile({ movie }: { movie: Movie }) {
           <img
             loading="lazy"
             src={movie.primaryImage.url}
-            alt={movie.originalTitle}
+            alt={movie.primaryTitle}
             className="movie-image"
           />
         ) : (
