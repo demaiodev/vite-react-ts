@@ -1,12 +1,17 @@
 import type { Movie } from "../types/Movie";
 
 import { supabase } from "../supabaseClient";
+import { getCurrentUserId } from "../supabaseServices";
 
 export default function AddMovieButton({ movie }: { movie: Movie }) {
-  function handleClick() {
+  async function handleClick() {
     supabase
       .from("movies")
-      .select()
+      .insert({
+        user_id: await getCurrentUserId(),
+        imdb_id: movie.id,
+        movie_title: movie.primaryTitle,
+      })
       .then((res) => {
         console.log(res);
       });

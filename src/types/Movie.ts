@@ -1,7 +1,7 @@
 export type Movie = {
-  id?: string;
-  originalTitle?: string;
-  primaryTitle?: string;
+  id: string;
+  originalTitle: string;
+  primaryTitle: string;
   startYear?: number;
   type?: string;
   primaryImage?: {
