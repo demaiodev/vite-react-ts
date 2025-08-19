@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Container from "../components/Container";
-import Grid from "../components/Grid";
 import MovieReviewTile from "../components/MovieReviewTile";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { getMovieList } from "../supabaseServices";
@@ -35,13 +34,11 @@ export default function MyList() {
   return (
     <Container classNames="m-4">
       {loading && <LoadingSpinner />}
-      {!loading && movieReviews.length > 0 && (
-        <Grid>
-          {movieReviews.map((movie) => (
-            <MovieReviewTile key={movie.id} movieReview={movie} />
-          ))}
-        </Grid>
-      )}
+      {!loading &&
+        movieReviews.length > 0 &&
+        movieReviews.map((movie) => (
+          <MovieReviewTile key={movie.id} movieReview={movie} />
+        ))}
     </Container>
   );
 }

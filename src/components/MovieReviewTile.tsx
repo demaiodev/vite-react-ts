@@ -1,11 +1,36 @@
+import { useState } from "react";
 import type { MovieReview } from "../types/MovieReview";
 import Container from "./Container";
+
+function ReviewStar({ filled = false }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={filled ? "star-icon star-icon-filled" : "star-icon"}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="#030712"
+      strokeWidth="1"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+      />
+    </svg>
+  );
+}
 
 export default function MovieReviewTile({
   movieReview,
 }: {
   movieReview: MovieReview;
 }) {
+  const [personalReview, setPersonalReview] = useState("");
+  const [reccBy, setReccBy] = useState("");
+  const [filled, setFilled] = useState(0);
+  const [hovered, setHovered] = useState<number | null>(null);
+
   return (
     <Container classNames="bg-gray-800 rounded-lg shadow-md shadow-gray-950 p-4">
       <h2 className="text-xl font-bold text-white hover:underline hover:cursor-pointer truncate">
@@ -19,19 +44,82 @@ export default function MovieReviewTile({
         </a>
       </h2>
 
-      <div className="movie-image-container">
-        {movieReview.imageUrl ? (
-          <img
-            loading="lazy"
-            src={movieReview.imageUrl}
-            alt={movieReview.title}
-            className="movie-image"
+      <div className="movie-review flex items-center">
+        <div
+          className="movie-image-container"
+          style={{
+            width: "150px",
+            height: "250px",
+          }}
+        >
+          {movieReview.imageUrl ? (
+            <img
+              loading="lazy"
+              src={movieReview.imageUrl}
+              alt={movieReview.title}
+              className="movie-image"
+            />
+          ) : (
+            <div className="movie-image movie-image-placeholder">
+              No image found :(
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-col items-start m-2">
+          <label htmlFor="personalReview">Personal Review</label>
+          <textarea
+            id="personalReview"
+            name="personalReview"
+            className="bg-gray-950 rounded p-2"
+            value={personalReview}
+            onChange={(e) => setPersonalReview(e.target.value)}
           />
-        ) : (
-          <div className="movie-image movie-image-placeholder">
-            No image found :(
+        </div>
+
+        <div className="flex flex-col items-start m-2">
+          <label htmlFor="reccBy">Recommended By</label>
+          <select
+            id="reccBy"
+            name="reccBy"
+            className="bg-gray-950 rounded p-2"
+            value={reccBy}
+            onChange={(e) => setReccBy(e.target.value)}
+          >
+            <option value="">Select one</option>
+            {["Langties", "TPetz", "Bill", "Brandon"].map((person) => {
+              return (
+                <option key={person} value={person}>
+                  {person}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+
+        <div className="flex flex-col items-start m-2">
+          <label>Rating</label>
+          <div className="flex-row">
+            {Array.from({ length: 5 }).map((_, index) => {
+              return (
+                <button
+                  key={index}
+                  onClick={() => setFilled(index + 1)}
+                  onMouseEnter={() => {
+                    setHovered(index + 1);
+                  }}
+                  onMouseLeave={() => {
+                    setHovered(null);
+                  }}
+                >
+                  <ReviewStar
+                    filled={hovered == null ? index < filled : index < hovered}
+                  />
+                </button>
+              );
+            })}
           </div>
-        )}
+        </div>
       </div>
     </Container>
   );
