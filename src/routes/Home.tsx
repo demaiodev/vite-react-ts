@@ -1,21 +1,18 @@
 import { useState } from "react";
-
+import Container from "../components/Container";
 import LoadingSpinner from "../components/LoadingSpinner";
 import SearchInput from "../components/SearchInput";
 import MovieTile from "../components/MovieTile";
 import Grid from "../components/Grid";
-
 import debounce from "../utils/debounce";
-
 import type { Movie } from "../types/Movie";
-import Container from "../components/Container";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchMovies = async (limit = 12) => {
+  const fetchMovies = async (limit = 20) => {
     if (!searchTerm) return;
     setLoading(true);
     const response = await fetch(
