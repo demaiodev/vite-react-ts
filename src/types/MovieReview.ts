@@ -7,4 +7,6 @@ export type MovieReview = {
   reccBy?: string;
   imdbId: string;
   imageUrl?: string;
+  runtime: number;
+  finished: boolean;
 };

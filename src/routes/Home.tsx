@@ -42,7 +42,13 @@ export default function Home() {
           loading={loading}
         />
         {loading && (
-          <div className="mt-50">
+          <div
+            className="mt-15 flex flex-col justify-center items-center"
+            style={{
+              width: "75vw",
+              height: "75vh",
+            }}
+          >
             <LoadingSpinner />
           </div>
         )}

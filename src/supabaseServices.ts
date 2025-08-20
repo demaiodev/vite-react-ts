@@ -58,6 +58,7 @@ export async function updateMovieReview(review: MovieReview) {
         recc_by: review.reccBy,
         personal_rating: review.personalRating,
         personal_review: review.personalReview,
+        finished: review.finished,
       })
       .eq("id", review.id)
       .select();
@@ -77,6 +78,8 @@ export async function insertMovie(movie: Movie) {
       imdb_id: movie.id,
       movie_title: movie.primaryTitle,
       image_url: movie.primaryImage?.url,
+      runtime: movie.runtimeSeconds ?? 0,
+      finished: false,
     };
     if (!payload.user_id) return;
     const { data, error } = await supabase.from(MOVIE_TABLE).insert(payload);

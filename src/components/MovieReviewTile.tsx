@@ -35,6 +35,7 @@ export default function MovieReviewTile({
   movieReview: MovieReview;
   setMovieReviews: Dispatch<SetStateAction<Array<MovieReview>>>;
 }) {
+  const [finished, setFinished] = useState(movieReview.finished || false);
   const [reccBy, setReccBy] = useState<string>(movieReview.reccBy || "");
   const [starsFilled, setStarsFilled] = useState<number>(
     movieReview.personalRating || 0
@@ -47,6 +48,12 @@ export default function MovieReviewTile({
     saving: false,
     deleting: false,
   });
+
+  const formatTime = (totalSeconds: number) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    return `${hours}h${minutes}m`;
+  };
 
   return (
     <Container classNames="bg-gray-800 rounded-lg shadow-md shadow-gray-950 p-4 m-2">
@@ -62,6 +69,11 @@ export default function MovieReviewTile({
               {movieReview.title}
             </a>
           </h2>
+          {movieReview.runtime !== 0 && (
+            <div className="text-sm text-gray-400">
+              {formatTime(movieReview.runtime)}
+            </div>
+          )}
           <div
             className="movie-image-container"
             style={{
@@ -134,17 +146,19 @@ export default function MovieReviewTile({
             onClick={() => {
               setBusy({ ...busy, saving: true });
               updateMovieReview({
-                id: movieReview.id,
                 reccBy,
+                finished,
                 personalReview,
+                id: movieReview.id,
                 imdbId: movieReview.imdbId,
                 personalRating: starsFilled,
+                runtime: movieReview.runtime,
               }).then(() => {
                 setBusy({ ...busy, saving: false });
               });
             }}
           >
-            {busy.saving ? <LoadingSpinner size="25px" /> : "Save"}
+            {busy.saving ? <LoadingSpinner size="24px" /> : "Save"}
           </button>
           <button
             className="rounded-lg bg-gray-950 hover:bg-red-900 p-1 w-full shadow-md hover:shadow-xl font-bold mt-2 flex justify-center items-center"
@@ -163,7 +177,7 @@ export default function MovieReviewTile({
               }
             }}
           >
-            {busy.deleting ? <LoadingSpinner size="25px" /> : "Delete"}
+            {busy.deleting ? <LoadingSpinner size="24px" /> : "Delete"}
           </button>
         </div>
 
@@ -181,6 +195,22 @@ export default function MovieReviewTile({
             maxLength={256}
             value={personalReview}
             onChange={(e) => setPersonalReview(e.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-col items-start m-2">
+          <label htmlFor="finished">Watched:</label>
+          <input
+            style={{
+              height: "2em",
+              width: "2em",
+              accentColor: "#0d542b",
+            }}
+            type="checkbox"
+            name="finished"
+            id="finished"
+            checked={finished}
+            onChange={() => setFinished(!finished)}
           />
         </div>
       </div>

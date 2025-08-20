@@ -4,6 +4,7 @@ export type Movie = {
   primaryTitle: string;
   startYear?: number;
   type?: string;
+  runtimeSeconds?: number;
   primaryImage?: {
     height?: number;
     url?: string;

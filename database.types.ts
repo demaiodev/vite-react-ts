@@ -17,6 +17,7 @@ export type Database = {
       movies: {
         Row: {
           created_at: string
+          finished: boolean
           id: number
           image_url: string | null
           imdb_id: string
@@ -24,10 +25,12 @@ export type Database = {
           personal_rating: number | null
           personal_review: string | null
           recc_by: string | null
+          runtime: number | null
           user_id: string
         }
         Insert: {
           created_at?: string
+          finished?: boolean
           id?: number
           image_url?: string | null
           imdb_id: string
@@ -35,10 +38,12 @@ export type Database = {
           personal_rating?: number | null
           personal_review?: string | null
           recc_by?: string | null
+          runtime?: number | null
           user_id: string
         }
         Update: {
           created_at?: string
+          finished?: boolean
           id?: number
           image_url?: string | null
           imdb_id?: string
@@ -46,6 +51,7 @@ export type Database = {
           personal_rating?: number | null
           personal_review?: string | null
           recc_by?: string | null
+          runtime?: number | null
           user_id?: string
         }
         Relationships: []
