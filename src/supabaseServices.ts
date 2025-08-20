@@ -11,13 +11,10 @@ export async function getCurrentUserId() {
       error,
     } = await supabase.auth.getUser();
     if (error) throw new Error(error.message);
-    if (!user)
-      throw new Error(
-        "Error getting user ID for DB transactions - try again later."
-      );
-    return user.id;
+    return user ? user.id : "";
   } catch (e) {
     console.error(e);
+    return "";
   }
 }
 
@@ -38,6 +35,7 @@ export async function getMovieReviews() {
     const { data, error } = await supabase
       .from(MOVIE_TABLE)
       .select()
+      .eq("user_id", await getCurrentUserId())
       .order("id", { ascending: false });
     if (error) {
       throw new Error(`Error getting reviews: ${error.message}`);
@@ -74,7 +72,7 @@ export async function updateMovieReview(review: MovieReview) {
 export async function insertMovie(movie: Movie) {
   try {
     const payload = {
-      user_id: (await getCurrentUserId()) ?? "",
+      user_id: await getCurrentUserId(),
       imdb_id: movie.id,
       movie_title: movie.primaryTitle,
       image_url: movie.primaryImage?.url,
@@ -97,6 +95,7 @@ export async function deleteMovieReview(id: number) {
     const { data, error } = await supabase
       .from(MOVIE_TABLE)
       .delete()
+      .eq("user_id", await getCurrentUserId())
       .eq("id", id);
     if (error) {
       throw new Error(`Error deleting review: ${error.message}`);

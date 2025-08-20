@@ -98,7 +98,9 @@ export default function MovieReviewTile({
 
         <div className="flex flex-col ml-4 justify-between">
           <div className="flex flex-col items-start m-2">
-            <label htmlFor="reccBy">Recommended By:</label>
+            <label htmlFor="reccBy" className="text-sm">
+              Recommended By:
+            </label>
             <select
               id="reccBy"
               name="reccBy"
@@ -121,7 +123,7 @@ export default function MovieReviewTile({
           </div>
 
           <div className="flex flex-col items-start m-2">
-            <label>Rating:</label>
+            <label className="text-sm">Rating:</label>
             <div className="flex-row">
               {Array.from({ length: 5 }).map((_, i) => {
                 return (
@@ -182,11 +184,14 @@ export default function MovieReviewTile({
         </div>
 
         <div className="flex flex-col items-start m-2">
-          <label htmlFor="personalReview">Review:</label>
+          <label htmlFor="personalReview" className="text-sm">
+            Review:
+          </label>
           <textarea
             id="personalReview"
             name="personalReview"
             className="bg-gray-950 rounded p-2"
+            placeholder="Write your review here..."
             rows={10}
             cols={45}
             style={{
@@ -199,11 +204,13 @@ export default function MovieReviewTile({
         </div>
 
         <div className="flex flex-col items-start m-2">
-          <label htmlFor="finished">Watched:</label>
+          <label htmlFor="finished" className="text-sm">
+            Watched:
+          </label>
           <input
             style={{
-              height: "2em",
-              width: "2em",
+              height: "1em",
+              width: "1em",
               accentColor: "#0d542b",
             }}
             type="checkbox"
