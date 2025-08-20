@@ -4,6 +4,8 @@ import type { MovieReview } from "../types/MovieReview";
 import Container from "./Container";
 import { updateMovieReview, deleteMovieReview } from "../supabaseServices";
 
+const recommenders = ["Bill", "Brandon", "Langties", "TPetz"];
+
 function ReviewStar({ filled = false, hovered = false }) {
   return (
     <svg
@@ -63,8 +65,8 @@ export default function MovieReviewTile({
           <div
             className="movie-image-container"
             style={{
-              width: "150px",
-              height: "250px",
+              width: "175px",
+              height: "275px",
             }}
           >
             {movieReview.imageUrl ? (
@@ -96,7 +98,7 @@ export default function MovieReviewTile({
               onChange={(e) => setReccBy(e.target.value)}
             >
               <option value="">Select one</option>
-              {["Langties", "TPetz", "Bill", "Brandon"].map((person) => {
+              {recommenders.map((person) => {
                 return (
                   <option key={person} value={person}>
                     {person}
@@ -128,7 +130,7 @@ export default function MovieReviewTile({
           </div>
 
           <button
-            className="rounded-lg bg-gray-700 hover:bg-green-900 p-1 w-full shadow-md hover:shadow-lg font-bold mt-2 flex justify-center items-center"
+            className="rounded-lg bg-gray-700 hover:bg-green-900 p-1 w-full shadow-md hover:shadow-xl font-bold mt-2 flex justify-center items-center"
             onClick={() => {
               setBusy({ ...busy, saving: true });
               updateMovieReview({
@@ -145,7 +147,7 @@ export default function MovieReviewTile({
             {busy.saving ? <LoadingSpinner size="25px" /> : "Save"}
           </button>
           <button
-            className="rounded-lg bg-gray-950 hover:bg-red-900 p-1 w-full shadow-md hover:shadow-lg font-bold mt-2 flex justify-center items-center"
+            className="rounded-lg bg-gray-950 hover:bg-red-900 p-1 w-full shadow-md hover:shadow-xl font-bold mt-2 flex justify-center items-center"
             onClick={() => {
               if (
                 confirm(`Are you sure you want to delete ${movieReview.title}?`)

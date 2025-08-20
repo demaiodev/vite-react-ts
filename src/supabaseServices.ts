@@ -25,7 +25,7 @@ export async function getSavedMovieIds() {
   try {
     const { data, error } = await supabase.from(MOVIE_TABLE).select("imdb_id");
     if (error) {
-      throw new Error(`Error getting list of reviews: ${error.message}`);
+      throw new Error(`Error getting saved IDs: ${error.message}`);
     }
     return data;
   } catch (e) {
@@ -35,9 +35,12 @@ export async function getSavedMovieIds() {
 
 export async function getMovieReviews() {
   try {
-    const { data, error } = await supabase.from(MOVIE_TABLE).select();
+    const { data, error } = await supabase
+      .from(MOVIE_TABLE)
+      .select()
+      .order("id", { ascending: false });
     if (error) {
-      throw new Error(`Error getting list of reviews: ${error.message}`);
+      throw new Error(`Error getting reviews: ${error.message}`);
     }
     return data;
   } catch (e) {
@@ -78,7 +81,7 @@ export async function insertMovie(movie: Movie) {
     if (!payload.user_id) return;
     const { data, error } = await supabase.from(MOVIE_TABLE).insert(payload);
     if (error) {
-      throw new Error(`Error inserting movie title: ${error.message}`);
+      throw new Error(`Error inserting movie: ${error.message}`);
     }
     return data;
   } catch (e) {
