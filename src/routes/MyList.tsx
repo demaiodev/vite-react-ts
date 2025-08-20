@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Container from "../components/Container";
 import MovieReviewTile from "../components/MovieReviewTile";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { getMovieList } from "../supabaseServices";
+import { getMovieReviews } from "../supabaseServices";
 import type { MovieReview } from "../types/MovieReview";
 
 export default function MyList() {
@@ -11,7 +11,7 @@ export default function MyList() {
 
   useEffect(() => {
     setLoading(true);
-    getMovieList().then((res) => {
+    getMovieReviews().then((res) => {
       if (!res) return;
       setMovieReviews(
         res.map((data) => {

@@ -1,12 +1,16 @@
 import { useState } from "react";
 import type { MovieReview } from "../types/MovieReview";
 import Container from "./Container";
+import { updateMovieReview } from "../supabaseServices";
 
-function ReviewStar({ filled = false }) {
+function ReviewStar({ filled = false, hovered = false }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className={filled ? "star-icon star-icon-filled" : "star-icon"}
+      style={{
+        fill: !filled && hovered ? "oklch(55.1% 0.027 264.364)" : "",
+      }}
       fill="none"
       viewBox="0 0 24 24"
       stroke="#030712"
@@ -26,99 +30,125 @@ export default function MovieReviewTile({
 }: {
   movieReview: MovieReview;
 }) {
-  const [personalReview, setPersonalReview] = useState("");
-  const [reccBy, setReccBy] = useState("");
-  const [filled, setFilled] = useState(0);
+  const [reccBy, setReccBy] = useState<string>(movieReview.reccBy || "");
+  const [filled, setFilled] = useState<number>(movieReview.personalRating || 0);
   const [hovered, setHovered] = useState<number | null>(null);
+  const [personalReview, setPersonalReview] = useState<string>(
+    movieReview.personalReview || ""
+  );
 
   return (
-    <Container classNames="bg-gray-800 rounded-lg shadow-md shadow-gray-950 p-4">
-      <h2 className="text-xl font-bold text-white hover:underline hover:cursor-pointer truncate">
-        <a
-          href={`https://www.imdb.com/title/${movieReview.imdbId}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block w-full max-w-[220px] truncate"
-        >
-          {movieReview.title}
-        </a>
-      </h2>
-
+    <Container classNames="bg-gray-800 rounded-lg shadow-md shadow-gray-950 p-4 m-2">
       <div className="movie-review flex items-center">
-        <div
-          className="movie-image-container"
-          style={{
-            width: "150px",
-            height: "250px",
-          }}
-        >
-          {movieReview.imageUrl ? (
-            <img
-              loading="lazy"
-              src={movieReview.imageUrl}
-              alt={movieReview.title}
-              className="movie-image"
-            />
-          ) : (
-            <div className="movie-image movie-image-placeholder">
-              No image found :(
+        <div>
+          <h2 className="text-xl font-bold text-white hover:underline hover:cursor-pointer truncate">
+            <a
+              href={`https://www.imdb.com/title/${movieReview.imdbId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full max-w-[220px] truncate"
+            >
+              {movieReview.title}
+            </a>
+          </h2>
+          <div
+            className="movie-image-container"
+            style={{
+              width: "150px",
+              height: "250px",
+            }}
+          >
+            {movieReview.imageUrl ? (
+              <img
+                loading="lazy"
+                src={movieReview.imageUrl}
+                alt={movieReview.title}
+                className="movie-image"
+              />
+            ) : (
+              <div className="movie-image movie-image-placeholder">
+                No image found :(
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-col ml-4 justify-between">
+          <div className="flex flex-col items-start m-2">
+            <label htmlFor="reccBy">Recommended By:</label>
+            <select
+              id="reccBy"
+              name="reccBy"
+              className="bg-gray-950 rounded p-2"
+              style={{
+                width: "150px",
+              }}
+              value={reccBy}
+              onChange={(e) => setReccBy(e.target.value)}
+            >
+              <option value="">Select one</option>
+              {["Langties", "TPetz", "Bill", "Brandon"].map((person) => {
+                return (
+                  <option key={person} value={person}>
+                    {person}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
+          <div className="flex flex-col items-start m-2">
+            <label>Rating</label>
+            <div className="flex-row">
+              {Array.from({ length: 5 }).map((_, i) => {
+                return (
+                  <button
+                    key={i}
+                    onClick={() => setFilled(i + 1)}
+                    onMouseEnter={() => setHovered(i + 1)}
+                    onMouseLeave={() => setHovered(null)}
+                  >
+                    <ReviewStar
+                      filled={hovered == null ? i < filled : i < hovered}
+                      hovered={hovered !== null}
+                    />
+                  </button>
+                );
+              })}
             </div>
-          )}
+          </div>
+
+          <button
+            className="rounded-lg bg-gray-600 hover:bg-gray-500 p-1 w-full shadow-md hover:shadow-lg font-bold mt-auto"
+            onClick={() => {
+              updateMovieReview({
+                id: movieReview.id,
+                reccBy,
+                personalReview,
+                imdbId: movieReview.imdbId,
+                personalRating: filled,
+              });
+            }}
+          >
+            Save
+          </button>
         </div>
 
         <div className="flex flex-col items-start m-2">
-          <label htmlFor="personalReview">Personal Review</label>
+          <label htmlFor="personalReview">Review</label>
           <textarea
             id="personalReview"
             name="personalReview"
             className="bg-gray-950 rounded p-2"
+            rows={10}
+            cols={45}
+            style={{
+              resize: "none",
+            }}
+            maxLength={256}
             value={personalReview}
             onChange={(e) => setPersonalReview(e.target.value)}
           />
-        </div>
-
-        <div className="flex flex-col items-start m-2">
-          <label htmlFor="reccBy">Recommended By</label>
-          <select
-            id="reccBy"
-            name="reccBy"
-            className="bg-gray-950 rounded p-2"
-            value={reccBy}
-            onChange={(e) => setReccBy(e.target.value)}
-          >
-            <option value="">Select one</option>
-            {["Langties", "TPetz", "Bill", "Brandon"].map((person) => {
-              return (
-                <option key={person} value={person}>
-                  {person}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-
-        <div className="flex flex-col items-start m-2">
-          <label>Rating</label>
-          <div className="flex-row">
-            {Array.from({ length: 5 }).map((_, index) => {
-              return (
-                <button
-                  key={index}
-                  onClick={() => setFilled(index + 1)}
-                  onMouseEnter={() => {
-                    setHovered(index + 1);
-                  }}
-                  onMouseLeave={() => {
-                    setHovered(null);
-                  }}
-                >
-                  <ReviewStar
-                    filled={hovered == null ? index < filled : index < hovered}
-                  />
-                </button>
-              );
-            })}
-          </div>
         </div>
       </div>
     </Container>

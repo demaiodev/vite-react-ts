@@ -1,10 +1,10 @@
 export type MovieReview = {
-  id?: number;
+  id: number;
   createdDate?: string;
   title?: string;
   personalRating?: number;
   personalReview?: string;
   reccBy?: string;
-  imdbId?: string;
+  imdbId: string;
   imageUrl?: string;
 };
