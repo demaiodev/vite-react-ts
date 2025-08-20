@@ -1,7 +1,7 @@
-import "./App.css";
+import "@/App.css";
 import { BrowserRouter, Routes, Route, NavLink } from "react-router";
-import Home from "./routes/Home";
-import MyList from "./routes/MyList";
+import Home from "@/routes/Home";
+import MyList from "@/routes/MyList";
 
 const routes = [
   {

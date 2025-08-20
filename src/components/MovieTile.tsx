@@ -1,8 +1,8 @@
 import { type SetStateAction, type Dispatch, useState } from "react";
-import LoadingSpinner from "../components/LoadingSpinner";
-import type { Movie } from "../types/Movie";
-import { insertMovie } from "../supabaseServices";
-import Container from "./Container";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import type { Movie } from "@/types/Movie";
+import { insertMovie } from "@/supabaseServices";
+import Container from "@/components/Container";
 
 export default function MovieTile({
   movie,

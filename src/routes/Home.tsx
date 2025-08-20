@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import Container from "../components/Container";
-import LoadingSpinner from "../components/LoadingSpinner";
-import SearchInput from "../components/SearchInput";
-import MovieTile from "../components/MovieTile";
-import Grid from "../components/Grid";
-import debounce from "../utils/debounce";
-import { getSavedMovieIds } from "../supabaseServices";
-import type { Movie } from "../types/Movie";
+import Container from "@/components/Container";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import SearchInput from "@/components/SearchInput";
+import MovieTile from "@/components/MovieTile";
+import Grid from "@/components/Grid";
+import debounce from "@/utils/debounce";
+import { getSavedMovieIds } from "@/supabaseServices";
+import type { Movie } from "@/types/Movie";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import Container from "../components/Container";
-import MovieReviewTile from "../components/MovieReviewTile";
-import LoadingSpinner from "../components/LoadingSpinner";
-import { getMovieReviews } from "../supabaseServices";
-import type { MovieReview } from "../types/MovieReview";
+import Container from "@/components/Container";
+import MovieReviewTile from "@/components/MovieReviewTile";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import { getMovieReviews } from "@/supabaseServices";
+import type { MovieReview } from "@/types/MovieReview";
 import { NavLink } from "react-router";
 
 export default function MyList() {

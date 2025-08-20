@@ -1,8 +1,8 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
-import LoadingSpinner from "../components/LoadingSpinner";
-import type { MovieReview } from "../types/MovieReview";
-import Container from "./Container";
-import { updateMovieReview, deleteMovieReview } from "../supabaseServices";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import type { MovieReview } from "@/types/MovieReview";
+import Container from "@/components/Container";
+import { updateMovieReview, deleteMovieReview } from "@/supabaseServices";
 
 const recommenders = ["Bill", "Brandon", "Langties", "TPetz"];
 
