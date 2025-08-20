@@ -1,16 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Container from "../components/Container";
 import LoadingSpinner from "../components/LoadingSpinner";
 import SearchInput from "../components/SearchInput";
 import MovieTile from "../components/MovieTile";
 import Grid from "../components/Grid";
 import debounce from "../utils/debounce";
+import { getSavedMovieIds } from "../supabaseServices";
 import type { Movie } from "../types/Movie";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const [movies, setMovies] = useState<Array<Movie>>([]);
+  const [savedMovies, setSavedMovies] = useState<Array<string>>([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getSavedMovieIds().then((res) => {
+      if (!res) return;
+      setSavedMovies(res.map((x) => x.imdb_id));
+    });
+  }, []);
 
   const fetchMovies = async (limit = 20) => {
     if (!searchTerm) return;
@@ -20,21 +29,7 @@ export default function Home() {
     );
     const { titles } = await response.json();
     setMovies(titles);
-
-    return Promise.all(
-      titles.map((title: Movie) => {
-        return new Promise((resolve, reject) => {
-          if (!title.primaryImage?.url) return resolve(null);
-          try {
-            const img = new Image();
-            img.src = title.primaryImage.url;
-            img.onload = () => resolve(null);
-          } catch (e) {
-            reject(e);
-          }
-        });
-      })
-    ).finally(() => setLoading(false));
+    setLoading(false);
   };
 
   return (
@@ -50,7 +45,12 @@ export default function Home() {
         {!loading && movies.length > 0 && (
           <Grid>
             {movies.map((movie) => (
-              <MovieTile key={movie.id} movie={movie} />
+              <MovieTile
+                key={movie.id}
+                movie={movie}
+                saved={savedMovies.some((x) => x === movie.id)}
+                setSavedMovies={setSavedMovies}
+              />
             ))}
           </Grid>
         )}

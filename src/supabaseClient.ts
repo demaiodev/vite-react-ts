@@ -11,4 +11,4 @@ const { data, error } = await supabase.auth.signInWithPassword({
   password: import.meta.env.VITE_SUPABASE_PASSWORD,
 });
 
-console.info({ data, error });
+console.info("Supabase Client Info:", { data, error });

@@ -1,8 +1,17 @@
+import type { SetStateAction, Dispatch } from "react";
 import type { Movie } from "../types/Movie";
-import AddMovieButton from "./AddMovieButton";
+import { insertMovie } from "../supabaseServices";
 import Container from "./Container";
 
-export default function MovieTile({ movie }: { movie: Movie }) {
+export default function MovieTile({
+  movie,
+  saved,
+  setSavedMovies,
+}: {
+  movie: Movie;
+  saved: boolean;
+  setSavedMovies: Dispatch<SetStateAction<Array<string>>>;
+}) {
   return (
     <Container classNames="bg-gray-800 rounded-lg shadow-md shadow-gray-950 p-4">
       <h2 className="text-xl font-bold text-white hover:underline hover:cursor-pointer truncate">
@@ -36,7 +45,24 @@ export default function MovieTile({ movie }: { movie: Movie }) {
           </div>
         )}
       </div>
-      <AddMovieButton movie={movie} />
+      <>
+        {saved ? (
+          <span className="rounded-lg bg-gray-900 w-full p-1 font-bold">
+            Added ➜
+          </span>
+        ) : (
+          <button
+            className="rounded-lg bg-gray-600 hover:bg-gray-500 p-1 w-full shadow-md hover:shadow-lg font-extrabold"
+            disabled={saved}
+            onClick={() => {
+              insertMovie(movie);
+              setSavedMovies((s) => [...s, movie.id]);
+            }}
+          >
+            +
+          </button>
+        )}
+      </>
     </Container>
   );
 }

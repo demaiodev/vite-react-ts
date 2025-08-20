@@ -37,7 +37,11 @@ export default function MyList() {
       {!loading &&
         movieReviews.length > 0 &&
         movieReviews.map((movie) => (
-          <MovieReviewTile key={movie.id} movieReview={movie} />
+          <MovieReviewTile
+            key={movie.id}
+            movieReview={movie}
+            setMovieReviews={setMovieReviews}
+          />
         ))}
     </Container>
   );

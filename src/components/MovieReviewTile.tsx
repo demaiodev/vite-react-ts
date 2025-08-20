@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import type { MovieReview } from "../types/MovieReview";
 import Container from "./Container";
-import { updateMovieReview } from "../supabaseServices";
+import { updateMovieReview, deleteMovieReview } from "../supabaseServices";
 
 function ReviewStar({ filled = false, hovered = false }) {
   return (
@@ -27,8 +27,10 @@ function ReviewStar({ filled = false, hovered = false }) {
 
 export default function MovieReviewTile({
   movieReview,
+  setMovieReviews,
 }: {
   movieReview: MovieReview;
+  setMovieReviews: Dispatch<SetStateAction<Array<MovieReview>>>;
 }) {
   const [reccBy, setReccBy] = useState<string>(movieReview.reccBy || "");
   const [filled, setFilled] = useState<number>(movieReview.personalRating || 0);
@@ -119,7 +121,7 @@ export default function MovieReviewTile({
           </div>
 
           <button
-            className="rounded-lg bg-gray-600 hover:bg-gray-500 p-1 w-full shadow-md hover:shadow-lg font-bold mt-auto"
+            className="rounded-lg bg-gray-700 hover:bg-green-900 p-1 w-full shadow-md hover:shadow-lg font-bold mt-2"
             onClick={() => {
               updateMovieReview({
                 id: movieReview.id,
@@ -131,6 +133,21 @@ export default function MovieReviewTile({
             }}
           >
             Save
+          </button>
+          <button
+            className="rounded-lg bg-gray-950 hover:bg-red-900 p-1 w-full shadow-md hover:shadow-lg font-bold mt-2"
+            onClick={() => {
+              if (
+                confirm(`Are you sure you want to delete ${movieReview.title}?`)
+              ) {
+                deleteMovieReview(movieReview.id);
+                setMovieReviews((p) =>
+                  p.filter((x) => x.id !== movieReview.id)
+                );
+              }
+            }}
+          >
+            Delete
           </button>
         </div>
 

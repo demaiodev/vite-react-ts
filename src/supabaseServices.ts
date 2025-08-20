@@ -21,6 +21,18 @@ export async function getCurrentUserId() {
   }
 }
 
+export async function getSavedMovieIds() {
+  try {
+    const { data, error } = await supabase.from(MOVIE_TABLE).select("imdb_id");
+    if (error) {
+      throw new Error(`Error getting list of reviews: ${error.message}`);
+    }
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 export async function getMovieReviews() {
   try {
     const { data, error } = await supabase.from(MOVIE_TABLE).select();
@@ -67,6 +79,21 @@ export async function insertMovie(movie: Movie) {
     const { data, error } = await supabase.from(MOVIE_TABLE).insert(payload);
     if (error) {
       throw new Error(`Error inserting movie title: ${error.message}`);
+    }
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function deleteMovieReview(id: number) {
+  try {
+    const { data, error } = await supabase
+      .from(MOVIE_TABLE)
+      .delete()
+      .eq("id", id);
+    if (error) {
+      throw new Error(`Error deleting review: ${error.message}`);
     }
     return data;
   } catch (e) {
