@@ -1,4 +1,5 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
+import LoadingSpinner from "../components/LoadingSpinner";
 import type { MovieReview } from "../types/MovieReview";
 import Container from "./Container";
 import { updateMovieReview, deleteMovieReview } from "../supabaseServices";
@@ -33,11 +34,17 @@ export default function MovieReviewTile({
   setMovieReviews: Dispatch<SetStateAction<Array<MovieReview>>>;
 }) {
   const [reccBy, setReccBy] = useState<string>(movieReview.reccBy || "");
-  const [filled, setFilled] = useState<number>(movieReview.personalRating || 0);
+  const [starsFilled, setStarsFilled] = useState<number>(
+    movieReview.personalRating || 0
+  );
   const [hovered, setHovered] = useState<number | null>(null);
   const [personalReview, setPersonalReview] = useState<string>(
     movieReview.personalReview || ""
   );
+  const [busy, setBusy] = useState({
+    saving: false,
+    deleting: false,
+  });
 
   return (
     <Container classNames="bg-gray-800 rounded-lg shadow-md shadow-gray-950 p-4 m-2">
@@ -48,7 +55,7 @@ export default function MovieReviewTile({
               href={`https://www.imdb.com/title/${movieReview.imdbId}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full max-w-[220px] truncate"
+              className="block w-full max-w-[175px] truncate"
             >
               {movieReview.title}
             </a>
@@ -100,18 +107,18 @@ export default function MovieReviewTile({
           </div>
 
           <div className="flex flex-col items-start m-2">
-            <label>Rating</label>
+            <label>Rating:</label>
             <div className="flex-row">
               {Array.from({ length: 5 }).map((_, i) => {
                 return (
                   <button
                     key={i}
-                    onClick={() => setFilled(i + 1)}
+                    onClick={() => setStarsFilled(i + 1)}
                     onMouseEnter={() => setHovered(i + 1)}
                     onMouseLeave={() => setHovered(null)}
                   >
                     <ReviewStar
-                      filled={hovered == null ? i < filled : i < hovered}
+                      filled={hovered == null ? i < starsFilled : i < hovered}
                       hovered={hovered !== null}
                     />
                   </button>
@@ -121,38 +128,45 @@ export default function MovieReviewTile({
           </div>
 
           <button
-            className="rounded-lg bg-gray-700 hover:bg-green-900 p-1 w-full shadow-md hover:shadow-lg font-bold mt-2"
+            className="rounded-lg bg-gray-700 hover:bg-green-900 p-1 w-full shadow-md hover:shadow-lg font-bold mt-2 flex justify-center items-center"
             onClick={() => {
+              setBusy({ ...busy, saving: true });
               updateMovieReview({
                 id: movieReview.id,
                 reccBy,
                 personalReview,
                 imdbId: movieReview.imdbId,
-                personalRating: filled,
+                personalRating: starsFilled,
+              }).then(() => {
+                setBusy({ ...busy, saving: false });
               });
             }}
           >
-            Save
+            {busy.saving ? <LoadingSpinner size="25px" /> : "Save"}
           </button>
           <button
-            className="rounded-lg bg-gray-950 hover:bg-red-900 p-1 w-full shadow-md hover:shadow-lg font-bold mt-2"
+            className="rounded-lg bg-gray-950 hover:bg-red-900 p-1 w-full shadow-md hover:shadow-lg font-bold mt-2 flex justify-center items-center"
             onClick={() => {
               if (
                 confirm(`Are you sure you want to delete ${movieReview.title}?`)
               ) {
-                deleteMovieReview(movieReview.id);
-                setMovieReviews((p) =>
-                  p.filter((x) => x.id !== movieReview.id)
-                );
+                setBusy({ ...busy, deleting: true });
+                deleteMovieReview(movieReview.id)
+                  .then(() => {
+                    setMovieReviews((p) =>
+                      p.filter((x) => x.id !== movieReview.id)
+                    );
+                  })
+                  .finally(() => setBusy({ ...busy, deleting: false }));
               }
             }}
           >
-            Delete
+            {busy.deleting ? <LoadingSpinner size="25px" /> : "Delete"}
           </button>
         </div>
 
         <div className="flex flex-col items-start m-2">
-          <label htmlFor="personalReview">Review</label>
+          <label htmlFor="personalReview">Review:</label>
           <textarea
             id="personalReview"
             name="personalReview"
