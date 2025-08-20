@@ -1,4 +1,5 @@
-import type { SetStateAction, Dispatch } from "react";
+import { type SetStateAction, type Dispatch, useState } from "react";
+import LoadingSpinner from "../components/LoadingSpinner";
 import type { Movie } from "../types/Movie";
 import { insertMovie } from "../supabaseServices";
 import Container from "./Container";
@@ -12,6 +13,8 @@ export default function MovieTile({
   saved: boolean;
   setSavedMovies: Dispatch<SetStateAction<Array<string>>>;
 }) {
+  const [loading, setLoading] = useState(false);
+
   return (
     <Container classNames="bg-gray-800 rounded-lg shadow-md shadow-gray-950 p-4">
       <h2 className="text-xl font-bold text-white hover:underline hover:cursor-pointer truncate">
@@ -52,14 +55,16 @@ export default function MovieTile({
           </span>
         ) : (
           <button
-            className="rounded-lg bg-gray-600 hover:bg-gray-500 p-1 w-full shadow-md hover:shadow-lg font-extrabold"
-            disabled={saved}
+            className="rounded-lg bg-gray-600 hover:bg-gray-500 p-1 w-full shadow-md hover:shadow-lg font-extrabold flex items-center justify-center"
             onClick={() => {
-              insertMovie(movie);
-              setSavedMovies((s) => [...s, movie.id]);
+              setLoading(true);
+              insertMovie(movie).then(() => {
+                setSavedMovies((s) => [...s, movie.id]);
+                setLoading(false);
+              });
             }}
           >
-            +
+            <span>{loading ? <LoadingSpinner size="24px" /> : "+"}</span>
           </button>
         )}
       </>

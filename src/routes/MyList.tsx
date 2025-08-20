@@ -33,7 +33,11 @@ export default function MyList() {
 
   return (
     <Container classNames="m-4">
-      {loading && <LoadingSpinner />}
+      {loading && (
+        <div className="mt-50">
+          <LoadingSpinner />
+        </div>
+      )}
       {!loading &&
         movieReviews.length > 0 &&
         movieReviews.map((movie) => (

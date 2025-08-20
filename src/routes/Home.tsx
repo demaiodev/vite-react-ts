@@ -41,7 +41,11 @@ export default function Home() {
           fetchMovies={debounce(fetchMovies)}
           loading={loading}
         />
-        {loading && <LoadingSpinner />}
+        {loading && (
+          <div className="mt-50">
+            <LoadingSpinner />
+          </div>
+        )}
         {!loading && movies.length > 0 && (
           <Grid>
             {movies.map((movie) => (
